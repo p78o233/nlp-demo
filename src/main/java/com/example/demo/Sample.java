@@ -7,6 +7,7 @@ package com.example.demo;
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.aip.nlp.AipNlp;
 import com.baidu.aip.nlp.ESimnetType;
+import com.example.demo.entity.dto.NewSummaryDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -81,8 +82,8 @@ public class Sample {
         JSONObject res = JSONObject.parseObject(client.topic(title, content, options).toString());
         return res;
     }
-    @GetMapping("/news_summary")
-    public JSONObject news_summary(@RequestParam String title,@RequestParam String content,@RequestParam int maxSummaryLen){
+    @PostMapping("/news_summary")
+    public JSONObject news_summary(@RequestBody NewSummaryDto dto){
 //        新闻摘要 https://cloud.baidu.com/doc/NLP/s/Gk6z52hu3
 //        String content = "原标题：硕士起步，博士扎堆，教师岗位真的“挤破头”？\n" +
 //                "\n" +
@@ -135,10 +136,10 @@ public class Sample {
 
         // 传入可选参数调用接口
         HashMap<String, Object> options = new HashMap<String, Object>();
-        options.put("title", title);
+        options.put("title", dto.getTitle());
 
         // 新闻摘要接口
-        JSONObject res = JSONObject.parseObject(client.newsSummary(content, maxSummaryLen, options).toString());
+        JSONObject res = JSONObject.parseObject(client.newsSummary(dto.getContent(), dto.getMaxSummaryLen(), options).toString());
         return res;
     }
 
